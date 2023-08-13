@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "329730653622",
+    "project_id": "sweetskey-f3431",
+    "storage_bucket": "sweetskey-f3431.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329730653622:android:75371c4fa1660b6bf85517",
+        "android_client_info": {
+          "package_name": "com.example.sweets_key"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329730653622-b9fsdqgpevd9rtbr6sc3ig28do7ojsf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnFJlSm0GNFp_O7JALFhMf5zX5aw2LLB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329730653622-b9fsdqgpevd9rtbr6sc3ig28do7ojsf9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

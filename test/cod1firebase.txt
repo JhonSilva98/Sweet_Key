@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+class ListWidgetMobile extends StatelessWidget {
+  final List<String> nomes;
+  final List<String> valor;
+  final List<String> images;
+  final String image;
+  const ListWidgetMobile({
+    super.key,
+    required this.images,
+    required this.nomes,
+    required this.valor,
+    required this.image,
+  });
+
+  void openWhatsApp(String text) async {
+    final phoneNumber =
+        "+5579996342964"; // Substitua pelo número de telefone do destinatário
+    final message =
+        'Gostaria de saber de mais informações sobre $text.'; // Substitua pela mensagem que você deseja enviar
+
+    final whatsappUrl =
+        "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}";
+
+    if (await canLaunchUrlString(whatsappUrl)) {
+      await launchUrlString(whatsappUrl);
+    } else {
+      throw "Não foi possível abrir o WhatsApp";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: [
+        Opacity(
+          opacity: 0.1,
+          child: Image.asset(
+            'assets/bannerMorangoscortadolist.png',
+            filterQuality: FilterQuality.high,
+            fit: BoxFit.cover,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+          ),
+        ),
+        CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 200.0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Image.network(
+                  image,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              sliver: SliverGrid.builder(
+                itemCount: nomes.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, // Duas colunas por linha
+                  mainAxisSpacing:
+                      10, // Espaçamento vertical entre os containers
+                  crossAxisSpacing:
+                      10, // Espaçamento horizontal entre os containers
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        flex: 3,
+                        child: InkWell(
+                          onTap: () {
+                            openWhatsApp(nomes[index]);
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          splashColor: Colors.pinkAccent,
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  images[index],
+                                  fit: BoxFit.cover,
+                                  height:
+                                      MediaQuery.of(context).size.height / 2,
+                                  width: MediaQuery.of(context).size.height / 2,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const CircularProgressIndicator();
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/boloiconreserve.png',
+                                      fit: BoxFit.contain,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              3,
+                                      width: MediaQuery.of(context).size.width,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            nomes[index],
+                            style: TextStyle(
+                                fontFamily: 'lobster',
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                fontSize: 20),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                          child: Text(
+                        valor[index],
+                        style: TextStyle(
+                            fontFamily: 'lobster',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600],
+                            fontSize: 15),
+                      ))
+                    ],
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ],
+    ));
+  }
+}
