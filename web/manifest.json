@@ -1,11 +1,11 @@
 {
-    "name": "sweets_key",
-    "short_name": "sweets_key",
+    "name": "Sweets Key",
+    "short_name": "Sweets Key",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Saboreie a doçura da vida com nossas criações irresistíveis",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
