@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'ResponsiveLayout/Desktop/ResponsiveLayoutDesktop.dart';
 import 'ResponsiveLayout/ResponsiveLayoutGeneretion.dart';
 import 'ResponsiveLayout/Mobile/ResponsiveLayoutMobile.dart';
 
@@ -14,9 +12,6 @@ class TelaInicial extends StatefulWidget {
 class _TelaInicialState extends State<TelaInicial> {
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayout(
-      mobile: const MobileNavigation(),
-      desktop: const DesktopNavigation(),
-    );
+    return ResponsiveLayout(mobile: const MobileNavigation());
   }
 }

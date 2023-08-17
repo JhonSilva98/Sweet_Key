@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sweets_key/telaPrincipal/ResponsiveLayout/Mobile/ListWidgetMobile.dart';
+
+import '../../../firebase/logicBancodeDados.dart';
 
 class MobileNavigation extends StatefulWidget {
   const MobileNavigation({super.key});
@@ -16,71 +17,7 @@ class _MobileNavigationState extends State<MobileNavigation> {
   List<String> textotest = [];
   String imageList = '';
 
-  Future<void> getData() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('bolos').get();
-    /*await FirebaseFirestore.instance
-        .collection('bolos')
-        .doc('Tradicionais')
-        .set({
-      'image':
-          'https://static.wixstatic.com/media/9ec495_ec83a62813424056b8caf0096c46f85b~mv2_d_2658_1772_s_2.jpg/v1/fill/w_663,h_440,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/Bolo%20Simples.jpg',
-      'images': textotest,
-      'nomes': textotest,
-      'valor': textotest,
-    });*/
-    snapshot.docs.forEach((element) {
-      textBolos.add(element.id);
-      //print(element.id);
-    });
-    for (String i in textBolos) {
-      imageUrls.add(await getImagePerfil(i));
-    }
-  }
-
-  Future<String> getImagePerfil(String colecao) async {
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('bolos').doc(colecao).get();
-
-    String listaImages = snapshot['image'];
-    return listaImages;
-  }
-
-  Future<List<String>> getCategorias(String colecao, String tip) async {
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('bolos').doc(colecao).get();
-
-    if (tip == 'images') {
-      List<String> listaImages = List<String>.from(snapshot['images']);
-      imageList = snapshot['image'];
-      return listaImages;
-    } else if (tip == 'nomes') {
-      List<String> listaNomes = List<String>.from(snapshot['nomes']);
-      return listaNomes;
-    } else {
-      List<String> listaValor = List<String>.from(snapshot['valor']);
-      return listaValor;
-    }
-  }
-
-  Future<List<String>> getPopulares(String tip) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('especial')
-        .doc('Populares')
-        .get();
-
-    if (tip == 'images') {
-      List<String> listaImages = List<String>.from(snapshot['images']);
-      imageList = snapshot['image'];
-      return listaImages;
-    } else if (tip == 'nomes') {
-      List<String> listaNomes = List<String>.from(snapshot['nomes']);
-      return listaNomes;
-    } else {
-      List<String> listaValor = List<String>.from(snapshot['valor']);
-      return listaValor;
-    }
-  }
+  BancoDeDados bdFirebase = BancoDeDados();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +28,7 @@ class _MobileNavigationState extends State<MobileNavigation> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FittedBox(
+            const FittedBox(
               fit: BoxFit.contain,
               child: Text(
                 "Sweets",
@@ -101,7 +38,7 @@ class _MobileNavigationState extends State<MobileNavigation> {
                     color: Colors.black),
               ),
             ),
-            SizedBox(width: 8.0),
+            const SizedBox(width: 8.0),
             ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Image.asset(
@@ -111,8 +48,8 @@ class _MobileNavigationState extends State<MobileNavigation> {
                 width: 50,
               ),
             ),
-            SizedBox(width: 8.0),
-            FittedBox(
+            const SizedBox(width: 8.0),
+            const FittedBox(
               fit: BoxFit.contain,
               child: Text(
                 "Key",
@@ -124,18 +61,22 @@ class _MobileNavigationState extends State<MobileNavigation> {
             ),
           ],
         ),
-        actions: [
+        actions: const [
           //IconButton(onPressed: (){}, icon: Icon(icon))
         ],
       ),
       body: FutureBuilder(
-          future: getData(),
+          future: bdFirebase.getData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(child: Text('Erro ao carregar os dados'));
+              return const Center(child: Text('Erro ao carregar os dados'));
             } else {
+              imageUrls = bdFirebase.imageUrls;
+              textBolos = bdFirebase.textBolos;
+              textotest = bdFirebase.textotest;
+              imageList = bdFirebase.imageList;
               List<String> bolos = textBolos;
               return ListView(children: [
                 Stack(
@@ -178,15 +119,16 @@ class _MobileNavigationState extends State<MobileNavigation> {
                         viewportFraction: 0.8,
                         enlargeCenterPage: true,
                         autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 5),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
                         autoPlayCurve: Curves.fastOutSlowIn,
                       ),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height / 3,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
                             Colors.transparent,
@@ -218,18 +160,19 @@ class _MobileNavigationState extends State<MobileNavigation> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 10,
-                              backgroundColor: Color(0XFFfb4a7a),
+                              backgroundColor: const Color(0XFFfb4a7a),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
                             ),
                             onPressed: () async {
                               List<String> imagesList =
-                                  await getPopulares('images');
+                                  await bdFirebase.getPopulares('images');
                               List<String> nomesList =
-                                  await getPopulares('nomes');
+                                  await bdFirebase.getPopulares('nomes');
                               List<String> valorList =
-                                  await getPopulares('valor');
+                                  await bdFirebase.getPopulares('valor');
+                              imageList = bdFirebase.imageList;
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -241,8 +184,8 @@ class _MobileNavigationState extends State<MobileNavigation> {
                                     ),
                                   ));
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Text(
                                 "Ver Todos",
                                 style: TextStyle(
@@ -273,8 +216,9 @@ class _MobileNavigationState extends State<MobileNavigation> {
                         shrinkWrap:
                             true, // Importante para evitar problemas de rolagem
                         physics:
-                            NeverScrollableScrollPhysics(), // Impede a rolagem do GridView
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            const NeverScrollableScrollPhysics(), // Impede a rolagem do GridView
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3, // Duas colunas por linha
                           mainAxisSpacing:
                               10, // Espaçamento vertical entre os containers
@@ -286,12 +230,13 @@ class _MobileNavigationState extends State<MobileNavigation> {
                           return InkWell(
                             onTap: () async {
                               //getCategorias(textBolos[index]);
-                              List<String> imagesList = await getCategorias(
-                                  textBolos[index], 'images');
-                              List<String> nomesList = await getCategorias(
-                                  textBolos[index], 'nomes');
-                              List<String> valorList = await getCategorias(
-                                  textBolos[index], 'valor');
+                              List<String> imagesList = await bdFirebase
+                                  .getCategorias(textBolos[index], 'images');
+                              List<String> nomesList = await bdFirebase
+                                  .getCategorias(textBolos[index], 'nomes');
+                              List<String> valorList = await bdFirebase
+                                  .getCategorias(textBolos[index], 'valor');
+                              imageList = bdFirebase.imageList;
                               //print(nomesList);
                               Navigator.push(
                                   context,
@@ -323,8 +268,9 @@ class _MobileNavigationState extends State<MobileNavigation> {
                                       width: MediaQuery.of(context).size.width,
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
+                                        if (loadingProgress == null) {
                                           return child;
+                                        }
                                         return const CircularProgressIndicator();
                                       },
                                       errorBuilder:
@@ -334,7 +280,7 @@ class _MobileNavigationState extends State<MobileNavigation> {
                                     ),
                                   ),
                                   Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(20),
                                           bottomRight: Radius.circular(20)),
@@ -357,7 +303,7 @@ class _MobileNavigationState extends State<MobileNavigation> {
                                         child: Text(
                                           bolos[index],
                                           softWrap: true,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontFamily: 'lobster',
                                               color: Colors.white,
                                               fontSize: 50),

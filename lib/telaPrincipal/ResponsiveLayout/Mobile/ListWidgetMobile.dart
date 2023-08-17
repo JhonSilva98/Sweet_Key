@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:popup_banner/popup_banner.dart';
+import '../../../firebase/logicBancodeDados.dart';
 
 class ListWidgetMobile extends StatelessWidget {
   final List<String> nomes;
@@ -14,60 +14,6 @@ class ListWidgetMobile extends StatelessWidget {
     required this.valor,
     required this.image,
   });
-
-  void openWhatsApp(String text) async {
-    final phoneNumber =
-        "+5579996342964"; // Substitua pelo número de telefone do destinatário
-    final message =
-        'Gostaria de saber de mais informações sobre $text.'; // Substitua pela mensagem que você deseja enviar
-
-    final whatsappUrl =
-        "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}";
-
-    if (await canLaunchUrlString(whatsappUrl)) {
-      await launchUrlString(whatsappUrl);
-    } else {
-      throw "Não foi possível abrir o WhatsApp";
-    }
-  }
-
-  Future<void> logicPopulares(
-      String nomeVar, String valorVar, String imagesVar) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('especial')
-        .doc('Populares')
-        .get();
-    List<String> listaNomes = List<String>.from(snapshot['nomes']);
-    List<String> listaValor = List<String>.from(snapshot['valor']);
-    List<String> listaImages = List<String>.from(snapshot['images']);
-    if (!listaNomes.contains(nomeVar)) {
-      print("entrou");
-      List<String> nomesEdit = listaNomes;
-      List<String> valorEdit = listaValor;
-      List<String> imagesEdit = listaImages;
-      //removendo ultimo
-      nomesEdit.removeLast();
-      valorEdit.removeLast();
-      imagesEdit.removeLast();
-      print(nomes);
-
-      //adicionando na frente
-      nomesEdit.insert(0, nomeVar);
-      valorEdit.insert(0, valorVar);
-      imagesEdit.insert(0, imagesVar);
-      print(nomesEdit);
-
-      //Atualizando banco de dados
-      await FirebaseFirestore.instance
-          .collection('especial')
-          .doc('Populares')
-          .update({
-        'images': imagesEdit,
-        'nomes': nomesEdit,
-        'valor': valorEdit,
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +33,21 @@ class ListWidgetMobile extends StatelessWidget {
         CustomScrollView(
           slivers: [
             SliverAppBar(
+              leading: CircleAvatar(
+                backgroundColor: Colors.pink,
+                child: IconButton(
+                  splashColor: Colors.pinkAccent,
+                  visualDensity: VisualDensity.comfortable,
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  color: Colors.white, // Mude a cor do ícone de voltar
+                ),
+              ),
               expandedHeight: 200.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.network(
@@ -107,10 +68,10 @@ class ListWidgetMobile extends StatelessWidget {
               ),
             ),
             SliverPadding(
-              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               sliver: SliverGrid.builder(
                 itemCount: nomes.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, // Duas colunas por linha
                   mainAxisSpacing:
                       10, // Espaçamento vertical entre os containers
@@ -122,18 +83,75 @@ class ListWidgetMobile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     splashColor: Colors.pinkAccent,
                     onTap: () async {
-                      openWhatsApp(nomes[index]);
-                      /*await FirebaseFirestore.instance
-                          .collection('especial')
-                          .doc('Populares')
-                          .set({
-                        'image':
-                            'https://static.wixstatic.com/media/9ec495_ec83a62813424056b8caf0096c46f85b~mv2_d_2658_1772_s_2.jpg/v1/fill/w_663,h_440,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/Bolo%20Simples.jpg',
-                        'images': images,
-                        'nomes': nomes,
-                        'valor': valor,
-                      });*/
-                      logicPopulares(nomes[index], valor[index], images[index]);
+                      BancoDeDados bdFirebaseList = BancoDeDados();
+
+                      PopupBanner(
+                        context: context,
+                        images: [images[index]],
+                        fit: BoxFit.cover,
+                        onClick: (index) {
+                          debugPrint("CLICKED $index");
+                        },
+                        customCloseButton: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Icon(Icons.exit_to_app_rounded)),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(40),
+                                    splashColor: Colors.pinkAccent,
+                                    onTap: () {
+                                      bdFirebaseList.openWhatsApp(
+                                          nomes[index], "Whatsapp");
+                                      bdFirebaseList.logicPopulares(
+                                          nomes[index],
+                                          valor[index],
+                                          images[index]);
+                                    },
+                                    child: Image.asset(
+                                      "assets/whats.png",
+                                      height: 100,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(40),
+                                    splashColor: Colors.pinkAccent,
+                                    onTap: () {
+                                      bdFirebaseList.openWhatsApp(
+                                          nomes[index], "Instagram");
+                                      bdFirebaseList.logicPopulares(
+                                          nomes[index],
+                                          valor[index],
+                                          images[index]);
+                                    },
+                                    child: Image.asset(
+                                      "assets/insta.png",
+                                      height: 100,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ).show();
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -177,7 +195,7 @@ class ListWidgetMobile extends StatelessWidget {
                               fit: BoxFit.scaleDown,
                               child: Text(
                                 nomes[index],
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontFamily: 'lobster',
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black,

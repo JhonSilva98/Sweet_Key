@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:sweets_key/telaPrincipal/telaPrincipal.dart';
 import 'firebase/options/firebase_options.dart';
 
+//quandofor pegar o getdados colocar as funçoes no else do future
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         ).copyWith(
           background: Colors.white,
         ),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
         ),
         //useMaterial3: true,
