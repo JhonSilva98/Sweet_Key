@@ -193,13 +193,17 @@ class ListWidgetMobile extends StatelessWidget {
                             flex: 1,
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text(
-                                nomes[index],
-                                style: const TextStyle(
-                                    fontFamily: 'lobster',
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontSize: 50),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                child: Text(
+                                  nomes[index],
+                                  style: const TextStyle(
+                                      fontFamily: 'lobster',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      fontSize: 50),
+                                ),
                               ),
                             ),
                           ),

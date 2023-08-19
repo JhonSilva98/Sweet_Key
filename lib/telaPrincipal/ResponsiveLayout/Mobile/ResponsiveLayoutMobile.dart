@@ -147,14 +147,17 @@ class _MobileNavigationState extends State<MobileNavigation> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(bottom: 50.0),
-                            child: Text(
-                              "Populares",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  fontFamily: 'lobster',
-                                  fontWeight: FontWeight.bold),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                "Populares",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 40,
+                                    fontFamily: 'lobster',
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                           ElevatedButton(
@@ -184,8 +187,8 @@ class _MobileNavigationState extends State<MobileNavigation> {
                                     ),
                                   ));
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
                               child: Text(
                                 "Ver Todos",
                                 style: TextStyle(
