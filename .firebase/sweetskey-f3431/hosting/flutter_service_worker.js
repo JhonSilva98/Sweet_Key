@@ -3,15 +3,17 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/AssetManifest.bin": "ff111192704ba860aff649d0e0c95386",
-"assets/AssetManifest.json": "d5e6a902af676f1d63cbfb609cd48950",
+const RESOURCES = {"assets/AssetManifest.bin": "9bb61b3dd821f1281f35e4a90ad10f64",
+"assets/AssetManifest.json": "4892b4786244a1a70f886bf599e39ae6",
 "assets/assets/bannerMorangoscortado.png": "9dbc414f6dd985598b11cadf379488cd",
 "assets/assets/bannerMorangoscortadolist.png": "3696658b71b428504c97a2bb9a96fb8c",
 "assets/assets/boloiconreserve.png": "8fbcd7c06745b23b280308afc400c285",
 "assets/assets/designer.png": "e2e89d79d1c10497e41e99c22fda8e21",
+"assets/assets/insta.png": "935b7695601400618a5f5613bb0b5215",
 "assets/assets/key%2520going%2520into%2520the%2520strawberryCUT.png": "ca20e4e3baa40a18589e59a69637ba0d",
 "assets/assets/keycandyicon.png": "692fb47e2d4a41218ca1079cb00e72ec",
 "assets/assets/linelovepik2.png": "c2115ae047d86eb66fa57fcdcd8bc4d8",
+"assets/assets/whats.png": "b93d993b3094af360e95f82200a5301b",
 "assets/FontManifest.json": "dea60578a932c17c5fcfe66e9035c61f",
 "assets/fonts/Lobster-Regular.ttf": "c3191f3b933ae0bd46335e178744326e",
 "assets/fonts/MaterialIcons-Regular.otf": "64d03d80088de29fa9c89d5025bf3ff4",
@@ -31,9 +33,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "ff111192704ba860aff649d0e0c95386
 "icons/Icon-512.png": "a267d9a81af9bcb05d4f63c32536b6f8",
 "icons/Icon-maskable-192.png": "486c609b6728e63cc33b0a38093402a1",
 "icons/Icon-maskable-512.png": "a267d9a81af9bcb05d4f63c32536b6f8",
-"index.html": "2f1d3a3936cb87c253f882e19236dff5",
-"/": "2f1d3a3936cb87c253f882e19236dff5",
-"main.dart.js": "de0c50e1c7108f51ec959a28ba7d3455",
+"index.html": "23ee5de0ee6ca3fbc5fb0fb40d3d29f2",
+"/": "23ee5de0ee6ca3fbc5fb0fb40d3d29f2",
+"main.dart.js": "79bd822d163a921319b0b364dd8ae02c",
 "manifest.json": "c443e33b86f3df2672ca203e7f44d885",
 "version.json": "7ebc429952ababa0527f9e22b13711fb"};
 // The application shell files that are downloaded before a service worker can
