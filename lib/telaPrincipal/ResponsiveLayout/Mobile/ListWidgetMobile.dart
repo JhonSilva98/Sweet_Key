@@ -33,19 +33,22 @@ class ListWidgetMobile extends StatelessWidget {
         CustomScrollView(
           slivers: [
             SliverAppBar(
-              leading: CircleAvatar(
-                backgroundColor: Colors.pink,
-                child: IconButton(
-                  splashColor: Colors.pinkAccent,
-                  visualDensity: VisualDensity.comfortable,
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.pink,
+                  child: IconButton(
+                    splashColor: Colors.pinkAccent,
+                    visualDensity: VisualDensity.comfortable,
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    color: Colors.white, // Mude a cor do ícone de voltar
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  color: Colors.white, // Mude a cor do ícone de voltar
                 ),
               ),
               expandedHeight: 200.0,
@@ -195,7 +198,7 @@ class ListWidgetMobile extends StatelessWidget {
                               fit: BoxFit.scaleDown,
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0),
+                                    left: 10.0, right: 10.0),
                                 child: Text(
                                   nomes[index],
                                   style: const TextStyle(
@@ -208,20 +211,18 @@ class ListWidgetMobile extends StatelessWidget {
                             ),
                           ),
                           Flexible(
-                              child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                valor[index],
-                                style: TextStyle(
-                                    fontFamily: 'lobster',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[600],
-                                    fontSize: 30),
-                              ),
-                            ),
-                          ))
+                              flex: 1,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  valor[index],
+                                  style: TextStyle(
+                                      fontFamily: 'lobster',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[600],
+                                      fontSize: 50),
+                                ),
+                              ))
                         ],
                       ),
                     ),
